@@ -57,7 +57,7 @@ class Shopping extends Component{
     // sorting and filtering data
     parseData (data) {
         const { sorters } = this.state;
-        const { filters } = this.state;
+        
 
         //sort data
         if (data && data.length) {
@@ -66,10 +66,7 @@ class Shopping extends Component{
           }
         }
         
-        //filter data
-        if (Array.isArray(filters) && filters.length) {
-          data = data.filter(createFilter(...filters));
-        }
+        
     
         return data;
     }
@@ -86,8 +83,14 @@ class Shopping extends Component{
     }
     
     renderData(data) {
-        const { currentPage, itemsPerPage } = this.state;                               
+        const { currentPage, itemsPerPage } = this.state; 
+        const { filters } = this.state;        
+
         if (data && data.length > 0) {
+            //filter data
+            if (Array.isArray(filters) && filters.length) {
+                data = data.filter(createFilter(...filters));
+            }
             
             // Get data for current page
             const indexOfLastItem = currentPage * itemsPerPage;
@@ -195,7 +198,6 @@ class Shopping extends Component{
                         </Grid>                     
                     </Container>                    
                 )               
-    
         } else {
           return <div>No items found</div>;
         }

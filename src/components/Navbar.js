@@ -4,7 +4,7 @@ const Navbar = ()=>{
     return(
             <nav className="nav-wrapper">
                 <div className="container">
-                    <Link to="/" className="brand-logo">Better-Card</Link>
+                    <Link to="/" className="brand-logo">Better-Cart</Link>
                     
                     <ul className="right">                        
                         <li><Link to="#"><i className="material-icons">shopping_cart</i></Link></li>
