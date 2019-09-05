@@ -8,7 +8,7 @@
     cursor: pointer;
 }
 .card{
-    width: 300px;
+    width: 300px;    
 }
 .card .card-image .card-title{
     color: black;
@@ -39,6 +39,17 @@
     bottom: 0;
     width: 50%;
 }
+
+.card-image {
+    width: 75px;
+    cursor: pointer;
+    height: 75px;
+    object-fit: cover;
+    margin-left: auto;
+    padding-top: 10px;
+    margin-right: auto;   
+}
+
 .collection .collection-item{
     display: flex;
 }
@@ -90,3 +101,23 @@
     font-weight: bold;    
     cursor: pointer;
 }
+
+.item-img {
+    height: auto;
+    max-height: 75px;
+    width: auto;
+    max-width: 75px;
+    margin-left: 25%;
+    margin-top: 2%;
+    cursor: pointer;
+
+  }
+.item-main-card {
+    width: 280px;
+    height: 420px;  
+}
+
+.item-onsale {    
+    color: #ff0000;
+}
+

@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
 import {BrowserRouter, Route, Switch} from 'react-router-dom'
 import Navbar from './components/Navbar'
-import Products from './components/Products'
+import Shopping from './components/Shopping'
+
 
 class App extends Component {
   render() {
     return (
        <BrowserRouter>
-            <div className="App">
-            
+            <div className="App">            
               <Navbar/>
                 <Switch>
-                    <Route exact path="/" component={Products}/>                    
-                  </Switch>
+                    <Route exact path="/" component={Shopping}/>                    
+                </Switch>
              </div>
        </BrowserRouter>
       

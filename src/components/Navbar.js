@@ -10,9 +10,7 @@ const Navbar = ()=>{
                         <li><Link to="#"><i className="material-icons">shopping_cart</i></Link></li>
                     </ul>
                 </div>
-            </nav>
-   
-        
+            </nav>           
     )
 }
 
