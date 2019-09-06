@@ -119,7 +119,7 @@ class Shopping extends Component{
                     productPercentOff = productPercentOff + '% Off';
                 }                         
                 return(                                                                  
-                        <Grid item key={index} xs={12} sm={4} >
+                        <Grid item key={index} >
                             <Card raised className="item-main-card">
                                 <CardMedia  className="item-img"          
                                     component="img"                                                                                                       
@@ -164,16 +164,16 @@ class Shopping extends Component{
                 }                
         
                 return(
-                    <Container maxWidth="md" component="main">
+                    <Container maxWidth="lg" component="main" >
                         <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
                             Today's best deals:
                         </Typography>
-                        <Grid container spacing={5} alignItems="stretch">
+                        <Grid container spacing={5} justify="center" alignItems="center">
                             {productList}
                         </Grid>   
-                        <Grid item xs={12} alignItems="center">
+                        <Grid item xs={12} >
                             <Paper>
-                            <Grid container >
+                            <Grid container justify="center" alignItems="center">
                                 <Grid item>                                
                                     <RadioGroup
                                         name="spacing"
