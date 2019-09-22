@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { createFilter } from '../util/Filter';
 import { createSorter } from '../util/Sort';
 import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -9,21 +10,59 @@ import Container from '@material-ui/core/Container';
 import CardMedia from '@material-ui/core/CardMedia';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import RadioGroup from '@material-ui/core/RadioGroup';
+import Box from '@material-ui/core/Box';
 import Radio from '@material-ui/core/Radio';
 import Paper from '@material-ui/core/Paper';
+import { withStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
+import Button from '@material-ui/core/Button';
+import Fab from '@material-ui/core/Fab';
+import IconButton from '@material-ui/core/IconButton';
+import AddIcon from '@material-ui/icons/Add';
+import RemoveIcon from '@material-ui/icons/Remove';
+import TextField from '@material-ui/core/TextField';
+
+const styles = {
+    orderControl:{
+        
+        
+    },
+    button: {
+        background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+        border: 0,
+        borderRadius: 15,
+        boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+        color: 'white',
+        width: '100%',
+        height:40,
+        padding: '0 30px',
+        bottom:5,
+    },
+    textField: {
+        //background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+        border: 0,        
+        boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+        color: 'white',
+        width: '20%',
+        textAlign: "center",
+        height:40,
+        padding: '0 30px',        
+    },
+    input: {
+      display: 'none',
+    },
+};
 
 class Shopping extends Component{
-    
+        
     //init parameter for filter and sorter
     static defaultProps = {
         filters: [{
-          property: 'Category',
-          value: 'fruit baskets'
+          property: 'name',
+          value: 'Breakfast'
         }],
     
-        sorters: [{
-          property: 'Brand'
-        }, {
+        sorters: [ {
           property: 'Name'
         }]
     }
@@ -35,7 +74,7 @@ class Shopping extends Component{
             filters: this.props.filters,
             sorters: this.props.sorters,
             currentPage: 1,
-            itemsPerPage: 99          
+            itemsPerPage: 30          
         };   
         this.handleClick = this.handleClick.bind(this);     
     }   
@@ -49,7 +88,7 @@ class Shopping extends Component{
     
     // fetch data from json file
     componentDidMount () {
-        fetch("/data/store-data.json")
+        fetch("/menu.txt")
           .then(res => res.json())
           .then(this.onLoad);
       }
@@ -57,8 +96,8 @@ class Shopping extends Component{
     // sorting and filtering data
     parseData (data) {
         const { sorters } = this.state;
+        const { filters } = this.state; 
         
-
         //sort data
         if (data && data.length) {
           if (Array.isArray(sorters) && sorters.length) {
@@ -66,15 +105,19 @@ class Shopping extends Component{
           }
         }
         
-        
-    
+         //filter data
+         if (Array.isArray(filters) && filters.length) {
+            data = data.filter(createFilter(...filters));
+        }
+
         return data;
     }
         
     onLoad = (data) => {
         this.setState({
-          data: this.parseData(data.data)
+          data: data
         });
+        console.log(data);
     }
         
     render() {
@@ -84,13 +127,10 @@ class Shopping extends Component{
     
     renderData(data) {
         const { currentPage, itemsPerPage } = this.state; 
-        const { filters } = this.state;        
+        
+        const { classes } = this.props;
 
-        if (data && data.length > 0) {
-            //filter data
-            if (Array.isArray(filters) && filters.length) {
-                data = data.filter(createFilter(...filters));
-            }
+        if (data && data.length > 0) {           
             
             // Get data for current page
             const indexOfLastItem = currentPage * itemsPerPage;
@@ -98,64 +138,38 @@ class Shopping extends Component{
             const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
             
             // Bind data to controls
-            let productList = currentItems.map((product,index)=>{
-                let productImage = product.ImageLinks.filter(image => image.Rel === "thumbnail"); 
-                let productImageUri = productImage[0].Uri;    
-                let productSaleDateText;
-                if (product.Sale){
-                    productSaleDateText = product.Sale.DateText;
-                }
-
-                // Calculating sale off percent
-                let productPercentOff ;
-                if(product.RegularPrice && product.RegularPrice.length>0){
-                    let RegularPrice = product.RegularPrice.replace('$','');
-                    let CurrentPrice = product.CurrentPrice.replace('$','');
-                    if (!isNaN(CurrentPrice)){
-                        productPercentOff = 100-Math.floor((CurrentPrice/RegularPrice)*100);                    
-                    }                        
-                }
-                if (productPercentOff){
-                    productPercentOff = productPercentOff + '% Off';
-                }                         
-                return(                                                                  
-                        <Grid item key={index} >
-                            <Card raised className="item-main-card">
+            let productList = currentItems.map((categories)=>{
+                let category_name = categories.name;
+                let category_note = categories.note;
+                let menuList = categories.menuitems.map((menu)=>{
+                    return(                                                                  
+                        <Grid item key={menu.id} >
+                            <Card raised className="item-main-card">                                                           
                                 <CardMedia  className="item-img"          
                                     component="img"                                                                                                       
-                                    image={productImageUri}
-                                    title={product.Name}
-                                />                                
+                                    image="https://source.unsplash.com/random/900×700/?noodle"
+                                    alt={menu.name}
+                                />          
+
                                 <CardContent>                                    
                                     <Typography variant="body1" component="p">
-                                        <b>{product.Name}</b>
+                                        <b>{menu.name}</b>
                                     </Typography>
                                     <Typography variant="body1" color="textPrimary" component="p">          
-                                        {product.Brand}  
-                                    </Typography>                                                                                            
-                                    <Typography variant="body1" color="textPrimary" component="p">          
-                                        {product.Description}
-                                    </Typography>      
-                                    <Typography variant="body1" color="textPrimary" component="p">          
-                                        {product.Size}  
-                                    </Typography> 
-                                    <Typography variant="body1" color="textPrimary" component="p">          
-                                        <b>Reg {product.RegularPrice}</b> 
-                                    </Typography>
-                                    <Typography variant="body1" className="item-onsale" component="p">          
-                                        <b>Sale {product.CurrentPrice}</b>
-                                    </Typography>
-                                    <Typography variant="body1" className="item-onsale" component="p">          
-                                        <b>{productPercentOff}</b>  
-                                    </Typography>
-                                    <Typography variant="body2" color="textPrimary" component="p">          
-                                        {productSaleDateText}  
-                                    </Typography>                                                                                                                                                                                                   
-                                </CardContent>                                
+                                        {menu.description}  
+                                    </Typography>                                                                                                                                                                                 
+                                </CardContent>   
+                                <CardActions>
+                                    <Button className={classes.button}>
+                                        Add to cart
+                                    </Button>  
+                                </CardActions>                             
                             </Card>
                         </Grid>                                                                                                  
                     )
                 })
+                return menuList;                                                    
+            })
 
                  // building page numbers
                 const pageNumbers = [];
@@ -166,7 +180,7 @@ class Shopping extends Component{
                 return(
                     <Container maxWidth="lg" component="main" >
                         <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
-                            Today's best deals:
+                            Today's menu:
                         </Typography>
                         <Grid container spacing={5} justify="center" alignItems="center">
                             {productList}
@@ -208,4 +222,9 @@ class Shopping extends Component{
     }            
 }    
 
-export default (Shopping);
+Shopping.propTypes = {
+    classes: PropTypes.object.isRequired
+  };
+  
+
+export default withStyles(styles)(Shopping);
