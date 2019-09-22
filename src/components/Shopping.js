@@ -164,6 +164,7 @@ class Shopping extends Component{
                                     <Typography variant="body1" color="textPrimary" component="p">          
                                         <b>Price: {menu.price} </b>  
                                     </Typography>  
+                                    
                                     <Typography variant="body1" color="textPrimary" component="p">          
                                         <i>Note: {category_note} </i>  
                                     </Typography>                                                                                                                                                                             
