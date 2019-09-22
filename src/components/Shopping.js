@@ -153,11 +153,20 @@ class Shopping extends Component{
 
                                 <CardContent>                                    
                                     <Typography variant="body1" component="p">
+                                        <b>{category_name}</b>
+                                    </Typography>
+                                    <Typography variant="body1" component="p">
                                         <b>{menu.name}</b>
                                     </Typography>
                                     <Typography variant="body1" color="textPrimary" component="p">          
                                         {menu.description}  
-                                    </Typography>                                                                                                                                                                                 
+                                    </Typography>   
+                                    <Typography variant="body1" color="textPrimary" component="p">          
+                                        <b>Price: {menu.price} </b>  
+                                    </Typography>  
+                                    <Typography variant="body1" color="textPrimary" component="p">          
+                                        <i>Note: {category_note} </i>  
+                                    </Typography>                                                                                                                                                                             
                                 </CardContent>   
                                 <CardActions>
                                     <Button className={classes.button}>
